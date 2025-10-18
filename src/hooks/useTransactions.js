@@ -12,9 +12,14 @@ export const useTransactions = () => {
         setError(null);
         try {
             const response = await fetch(API_URL);
-            if (!response.ok) throw new Error('Failed to fetch transactions');
+            
+            if (!response.ok) { 
+                throw new Error('Failed to fetch transactions');
+            }
+            
             const data = await response.json();
             setTransactions(data);
+            
         } catch (err) {
             setError(err.message);
         } finally {
@@ -22,9 +27,11 @@ export const useTransactions = () => {
         }
     }, []);
 
+
     useEffect(() => {
         fetchTransactions();
     }, [fetchTransactions]);
+
 
     const saveTransaction = async (transactionData) => {
         const method = transactionData.id ? 'PUT' : 'POST';
@@ -37,7 +44,7 @@ export const useTransactions = () => {
         });
 
         if (response.ok) {
-            fetchTransactions(); 
+            await fetchTransactions(); 
             return true;
         }
         throw new Error(`Failed to ${method === 'POST' ? 'create' : 'update'} transaction`);
@@ -49,7 +56,7 @@ export const useTransactions = () => {
         });
 
         if (response.ok) {
-            setTransactions(transactions.filter(t => t.id !== id));
+            await fetchTransactions(); 
             return true;
         }
         throw new Error('Failed to delete transaction');

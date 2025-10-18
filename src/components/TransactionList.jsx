@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/TransactionList.css'; 
 
 const TransactionList = ({ transactions, onDelete, onEdit }) => {
 
@@ -13,44 +14,47 @@ const TransactionList = ({ transactions, onDelete, onEdit }) => {
     };
 
     if (transactions.length === 0) {
-        return <p>No hay transacciones registradas. ¡Añade una para empezar!</p>;
+        return <p style={{ marginTop: '20px' }}>No hay transacciones registradas. ¡Usa el formulario para añadir la primera!</p>;
     }
 
     return (
         <div style={{ marginTop: '30px' }}>
-            <h3>Historial de Transacciones (CRUD: Read/Delete/Update)</h3>
+            <h3>Historial de Transacciones (CRUD: Leer, Borrar, Modificar)</h3>
             
-            <table style={styles.table}>
+            <table className="transaction-table">
                 
                 <thead> 
-                    <tr style={styles.headerRow}>
-                        <th style={styles.th}>Fecha</th>
-                        <th style={styles.th}>Tipo</th>
-                        <th style={styles.th}>Descripción</th>
-                        <th style={styles.th}>Categoría</th>
-                        <th style={styles.th}>Monto</th>
-                        <th style={styles.th}>Acciones</th>
+                    <tr className="header-row">
+                        <th className="th">Fecha</th>
+                        <th className="th">Tipo</th>
+                        <th className="th">Descripción</th>
+                        <th className="th">Categoría</th>
+                        <th className="th td-amount">Monto</th>
+                        <th className="th">Acciones</th>
                     </tr>
                 </thead>
-        
+                
                 <tbody>
                     {transactions.map(t => (
-                        <tr key={t.id} style={{ backgroundColor: t.type === 'INCOME' ? '#e8f5e9' : '#ffebee' }}>
-                            <td style={styles.td}>{t.date}</td>
-                            <td style={styles.td}>{t.type === 'INCOME' ? 'Ingreso' : 'Gasto'}</td>
-                            <td style={styles.td}>{t.description}</td>
-                            <td style={styles.td}>{t.category}</td>
-                            <td style={styles.tdAmount}>${t.amount.toFixed(2)}</td>
-                            <td style={styles.td}>
+                        <tr 
+                            key={t.id} 
+                            className={t.type === 'INCOME' ? 'income-row' : 'expense-row'}
+                        >
+                            <td className="td">{t.date}</td>
+                            <td className="td">{t.type === 'INCOME' ? 'Ingreso' : 'Gasto'}</td>
+                            <td className="td">{t.description}</td>
+                            <td className="td">{t.category}</td>
+                            <td className="td td-amount">${t.amount.toFixed(2)}</td> 
+                            <td className="td">
                                 <button 
                                     onClick={() => onEdit(t)}
-                                    style={styles.editButton}
+                                    className="edit-button"
                                 >
                                     Modificar
                                 </button>
                                 <button 
                                     onClick={() => handleDelete(t.id)}
-                                    style={styles.deleteButton}
+                                    className="delete-button"
                                 >
                                     Borrar
                                 </button>
@@ -62,6 +66,5 @@ const TransactionList = ({ transactions, onDelete, onEdit }) => {
         </div>
     );
 };
-
 
 export default TransactionList;

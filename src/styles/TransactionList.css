@@ -1,0 +1,52 @@
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.header-row {
+    background-color: #343a40;
+    color: white;
+}
+
+.th {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #444;
+}
+
+.td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.td-amount {
+    font-weight: bold;
+    text-align: right;
+}
+
+.income-row {
+    background-color: #e8f5e9;
+}
+
+.expense-row {
+    background-color: #ffebee;
+}
+
+.edit-button {
+    margin-right: 5px;
+    background-color: #ffc107;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
