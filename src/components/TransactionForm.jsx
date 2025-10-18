@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/TransactionForm.css'; 
+import '../styles/TransactionsForm.css';
 
 const TransactionForm = ({ onSave, initialData = {}, onCancel }) => {
-    const isEditing = initialData.id;
+    const isEditing = initialData.id;ss
 
     const [formData, setFormData] = useState({
         amount: initialData.amount || '',
