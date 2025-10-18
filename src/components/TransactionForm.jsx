@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/TransactionsForm.css';
 
 const TransactionForm = ({ onSave, initialData = {}, onCancel }) => {
-    const isEditing = initialData.id;ss
+    const isEditing = initialData.id;
 
     const [formData, setFormData] = useState({
         amount: initialData.amount || '',

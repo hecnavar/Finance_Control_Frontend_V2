@@ -44,7 +44,9 @@ const TransactionList = ({ transactions, onDelete, onEdit }) => {
                             <td className="td">{t.type === 'INCOME' ? 'Ingreso' : 'Gasto'}</td>
                             <td className="td">{t.description}</td>
                             <td className="td">{t.category}</td>
-                            <td className="td td-amount">${t.amount.toFixed(2)}</td> 
+                            <td className="td td-amount">
+                                ${t.amount ? t.amount.toFixed(2) : '0.00'}
+                            </td>
                             <td className="td">
                                 <button 
                                     onClick={() => onEdit(t)}
