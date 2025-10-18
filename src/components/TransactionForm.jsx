@@ -24,10 +24,18 @@ const TransactionForm = ({ onSave, initialData = {}, onCancel }) => {
         });
     }, [initialData]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    if (name === 'type') {
+        setFormData(prev => ({ 
+            ...prev, 
+            [name]: value === 'Gasto' ? 'EXPENSE' : 'INCOME' 
+        }));
+    } else {
         setFormData(prev => ({ ...prev, [name]: value }));
-    };
+    }
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();

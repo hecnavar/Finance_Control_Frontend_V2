@@ -34,32 +34,42 @@ export const useTransactions = () => {
 
 
     const saveTransaction = async (transactionData) => {
-        const method = transactionData.id ? 'PUT' : 'POST';
-        const url = transactionData.id ? `${API_URL}/${transactionData.id}` : API_URL;
+        try {
+            const method = transactionData.id ? 'PUT' : 'POST';
+            const url = transactionData.id ? `${API_URL}/${transactionData.id}` : API_URL;
 
-        const response = await fetch(url, {
-            method: method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(transactionData),
-        });
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(transactionData),
+            });
 
-        if (response.ok) {
-            await fetchTransactions(); 
-            return true;
+            if (response.ok) {
+                await fetchTransactions(); 
+                return true;
+            }
+            
+            const errorText = await response.text();
+            throw new Error(errorText || `Failed to ${method === 'POST' ? 'create' : 'update'} transaction`);
+        } catch (error) {
+            throw error; 
         }
-        throw new Error(`Failed to ${method === 'POST' ? 'create' : 'update'} transaction`);
     };
 
     const deleteTransaction = async (id) => {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            await fetchTransactions(); 
-            return true;
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                await fetchTransactions(); 
+                return true;
+            }
+            throw new Error('Failed to delete transaction');
+        } catch (error) {
+            throw error;
         }
-        throw new Error('Failed to delete transaction');
     };
 
     return { 

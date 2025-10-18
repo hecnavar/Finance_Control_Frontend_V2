@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // 💡 Añadida importación de useCallback
 import { useTransactions } from '../hooks/useTransactions';
 import TransactionForm from './TransactionForm';
 import TransactionList from './TransactionList';
@@ -21,7 +20,7 @@ const Dashboard = () => {
     const [summaryError, setSummaryError] = useState(null);
     const [editingTransaction, setEditingTransaction] = useState(null); 
 
-    const fetchSummaryData = async () => {
+    const fetchSummaryData = useCallback(async () => {
         setSummaryLoading(true);
         setSummaryError(null);
         try {
@@ -29,7 +28,11 @@ const Dashboard = () => {
             const monthlyResponse = await fetch(`${API_BASE_URL}/summary/monthly`);
 
             if (!balanceResponse.ok || !monthlyResponse.ok) {
-                throw new Error("Fallo al cargar summary (Backend error)");
+                const errorDetail = !balanceResponse.ok 
+                    ? `Balance: ${balanceResponse.status}` 
+                    : `Monthly: ${monthlyResponse.status}`;
+                
+                throw new Error(`Fallo al cargar summary (Backend error: ${errorDetail})`);
             }
 
             setBalance(await balanceResponse.json());
@@ -37,20 +40,20 @@ const Dashboard = () => {
             
         } catch (err) {
             setSummaryError("Error al cargar datos de resumen. Verifique el Backend.");
+            console.error("Error fetching summary data:", err); 
         } finally {
             setSummaryLoading(false);
         }
-    };
+    }, []);
 
     const handleSave = async (data) => {
-        await saveTransaction(data);
+        await saveTransaction(data); 
         setEditingTransaction(null);
     };
+
     useEffect(() => {
         fetchSummaryData();
-    }, [transactions]); 
-
-
+    }, [fetchSummaryData, transactions]);
     if (crudLoading || summaryLoading) {
         return <div style={{padding: '20px'}}>Cargando...</div>;
     }
